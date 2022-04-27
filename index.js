@@ -2,21 +2,19 @@
 const Eris = require("eris");
 require("dotenv").config();
 const bot = new Eris(process.env.TOKEN, {intents: 32767});
+const Constants = Eris.Constants;
 
 bot.on("ready", async () => {
   console.log("BOT is Ready!");
-
-    //Note: You should use guild commands to test, as they update instantly. Global commands can take up to an hour to update.
-
-    const commands = await bot.getCommands();
+  const commands = await bot.getCommands();
 
     if(!commands.length) {
         bot.createCommand({
-            name: "test_chat_input",
+            name: "animals",
             description: "Test command to show how to make commands",
             options: [ //An array of Chat Input options https://discord.com/developers/docs/interactions/application-commands#application-command-object-application-command-option-structure
                 {
-                    "name": "animal", //The name of the option
+                    "name": "Type", //The name of the option
                     "description": "The type of animal",
                     "type": Constants.ApplicationCommandOptionTypes.STRING, //This is the type of string, see the types here https://discord.com/developers/docs/interactions/application-commands#application-command-object-application-command-option-type
                     "required": true,
@@ -36,7 +34,7 @@ bot.on("ready", async () => {
                     ]
                 },
                 {
-                    "name": "only_smol",
+                    "name": "only smol",
                     "description": "Whether to show only baby animals",
                     "type": Constants.ApplicationCommandOptionTypes.BOOLEAN,
                     "required": false
@@ -88,7 +86,7 @@ bot.on("interactionCreate", (interaction) => {
                 interaction.createMessage("interaction recieved");
                 return bot.deleteCommand(interaction.data.id);
             default: {
-                return interaction.createMessage("interaction recieved");
+                return interaction.createMessage("perintah diterima");
             }
         }
     }

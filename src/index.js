@@ -1,7 +1,7 @@
 // eris lib start
 const Eris = require("eris");
 require("dotenv").config();
-const client = new Eris(process.env.TOKEN, {intents: 32767});
+const client = new Eris.CommandClient(process.env.TOKEN, {intents: 32767});
 
 client.on("ready", async () => {
   console.log("BOT is Ready!");
@@ -33,18 +33,3 @@ client.on("interactionCreate", async interaction => {
 
 client.connect();
 // eris lib end
-
-
-// expressjs start
-const express = require('express') // untuk website
-const app = express()
-const port = 3000
-
-app.get('/', (req, res) => {
-  res.send('Invite ZenBot now! https://discord.com/api/oauth2/authorize?client_id=915495248749293598&permissions=8&scope=bot Temp bot need admin permission, but i keep it safe, i hope!')
-})
-
-app.listen(port, () => {
-  console.log(`ExpressJS listening on port ${port}`)
-})
-// expressjs end 

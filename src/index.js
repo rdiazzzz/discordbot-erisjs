@@ -1,25 +1,22 @@
 const Eris = require("eris");
 require("dotenv").config();
-const client = new Eris.CommandClient(process.env.TOKEN, {intents: 32767});
+const client = new Eris.CommandClient(process.env.TOKEN, {intents: 32767}, {prefix: process.env.PREFIX});
+const { readdirSync } = require('fs');
 
+// command handling
+const commandFile = readdirSync('./src/commands').filter(File => File.endsWith(".js"));
+
+commandFile.forEach(file => {
+  const command = require(`./commands/${file}`);
+  client.registerCommand(command.name, async (message, args) => command.run(client, message, args), {
+    aliases: command.alias,
+    description: command.description
+  });
+});
+
+// ready log
 client.on("ready", async () => {
   console.log("BOT is Ready!");
-
-  const commands = await client.getCommands();
-  let guildId = '872361481763692564';
-
-  (() => {
-
-    if(!commands.legth) {
-      client.createGuildCommand(guildId, {
-        name: "cat",
-        description: "send random cat images",
-        type: 1
-      })
-      .catch(console.error);
-    }
-    
-  })();
 });
 
 // error handling
@@ -27,13 +24,5 @@ client.on("error", (err) => {
   if (err.code === 1006) return;
 });
 
-client.on("interactionCreate", async interaction => {
-  if (!(interaction instanceof Eris.CommandInteraction)) return;
-
-  if (interaction.data.name === "cat") {
-    return interaction.createMessage("cat");
-  }
-});
-
+// for connect to  bot
 client.connect();
-// eris lib end

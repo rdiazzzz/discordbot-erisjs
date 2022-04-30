@@ -1,4 +1,3 @@
-// eris lib start
 const Eris = require("eris");
 require("dotenv").config();
 const client = new Eris.CommandClient(process.env.TOKEN, {intents: 32767});
@@ -21,6 +20,11 @@ client.on("ready", async () => {
     }
     
   })();
+});
+
+// error handling
+client.on("error", (err) => {
+  if (err.code === 1006) return;
 });
 
 client.on("interactionCreate", async interaction => {
